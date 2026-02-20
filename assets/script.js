@@ -35,11 +35,11 @@ async function init() {
     }
     const csvText = await csvResponse.text();
     pyodide.globals.set("csv_text", csvText);
-    pyodide.globals.set("mod", "web")
+    pyodide.globals.set("mode", "web")
 
     
     let titles = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text)
+matrix = Matrix(csv_text, mode)
 matrix.get_titles()
 `);
 
@@ -61,10 +61,10 @@ async function runLPS() {
 
     pyodide.globals.set("from", from);
     pyodide.globals.set("to", to);
-    pyodide.globals.set("mod", "web")
+    pyodide.globals.set("mode", "web")
 
     let result = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text)
+matrix = Matrix(csv_text, mode)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.title_position(from), matrix.title_position(to))
 `);
