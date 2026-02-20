@@ -35,10 +35,10 @@ async function init() {
     }
     const csvText = await csvResponse.text();
     pyodide.globals.set("csv_text", csvText);
+    pyodide.globals.set("mod", "web")
 
     
     let titles = await pyodide.runPythonAsync(`
-mod = "web"
 matrix = Matrix(csv_text)
 matrix.get_titles()
 `);
