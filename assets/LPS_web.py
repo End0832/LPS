@@ -1,13 +1,12 @@
 from math import inf
 
 class Matrix():
-    def __init__(self, name):
+    def __init__(self, file_content):
         self.csv = []
         self.titles = []
-        with open(name, "r", encoding="utf-8") as f:
-            f = f.readlines()
-            for i in range(1, len(f)):
-                self.csv.append(f[i].strip("\n").split(","))
+        f = file_content.splitlines()
+        for i in range(1, len(f)):
+            self.csv.append(f[i].strip("\n").split(","))
             for i in range(0, len(self.csv)):
                 self.titles.append(self.csv[i][0])
                 self.titles.append(self.csv[i][1])
@@ -133,14 +132,3 @@ class Dijkstra():
             path_str = path_str + " -> " + self.chain_loc[i]
             
         return f"TIME: {time}\nPATH: {path_str}"
-
-
-matrix = Matrix("data.csv")
-gps = Dijkstra(matrix.get(), matrix.get_titles())
-
-return matrix.get_titles()
-
-while True:
-    if val1 and val2 != None:
-        gps.get(val1, val2)
-        val1 = val2 = None
