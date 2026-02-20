@@ -1,3 +1,6 @@
+let subdomain = window.location.pathname.split("/").filter(s => s.length > 0)
+subdomain = subdomain[subdomain.length - 1]
+
 document.getElementById("output").textContent = "Loading Pyodide...";
 let pyodideReady = loadPyodide();
 
@@ -14,7 +17,7 @@ async function init() {
 
 
     document.getElementById("output").textContent = "Loading CSV...";
-    const csvResponse = await fetch("data.csv");
+    const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
     if (!csvResponse.ok) document.getElementById("output").textContent = "Loading failed.";
     if (!csvResponse.ok) alert("CSV load failed: " + csvResponse.status);
     const csvText = await csvResponse.text();
