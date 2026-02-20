@@ -18,7 +18,7 @@ async function init() {
 
 
     print("Loading Python...", "add");
-    const scriptResponse = await fetch("../assets/LPS.pyw");
+    const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.pyw");
     if (!scriptResponse.ok) {
         print("Loading failed.", "replace");
         alert("Python load failed: " + scriptResponse.status);
