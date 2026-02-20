@@ -43,21 +43,21 @@ matrix = Matrix(csv_text)
 matrix.get_titles()
 `);
 
-    let startMenu = document.getElementById("start");
-    let endMenu = document.getElementById("end");
+    let fromBox = document.getElementById("from_box");
+    let toBox = document.getElementById("to_box");
     print("Loaded.", "replace");
 
     titles.forEach(t => {
-        startMenu.add(new Option(t, t));
-        endMenu.add(new Option(t, t));
+        fromBox.add(new Option(t, t));
+        toBox.add(new Option(t, t));
     });
 }
 
 async function runLPS() {
     const pyodide = await pyodideReady;
 
-    let from = document.getElementById("from").value;
-    let to = document.getElementById("to").value;
+    let from = document.getElementById("from_box").value;
+    let to = document.getElementById("to_box").value;
 
     pyodide.globals.set("from", from);
     pyodide.globals.set("to", to);
