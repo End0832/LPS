@@ -20,6 +20,8 @@ class Matrix():
                 nested_list.append(inf)
             self.matrix.append(nested_list)
 
+        self.fill()
+
     def get_titles(self):
         return self.titles
             
@@ -131,3 +133,14 @@ class Dijkstra():
             path_str = path_str + " -> " + self.chain_loc[i]
             
         return f"TIME: {time}\nPATH: {path_str}"
+
+
+matrix = Matrix("data.csv")
+gps = Dijkstra(matrix.get(), matrix.get_titles())
+
+return matrix.get_titles()
+
+while True:
+    if val1 and val2 != None:
+        gps.get(val1, val2)
+        val1 = val2 = None
