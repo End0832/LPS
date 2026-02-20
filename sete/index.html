@@ -58,7 +58,7 @@
 
         <button onclick="runLPS()">Travel</button>
 
-        <pre id="output">output</pre>
+        <pre id="output">Loading...</pre>
     </div>
 
     <script>
@@ -71,11 +71,13 @@
             const scriptResponse = await fetch("../assets/LPS_web.py");
             const scriptCode = await scriptResponse.text();
             await pyodide.runPythonAsync(scriptCode);
+            document.getElementById("output").textContent = "Python loaded.";
 
             
             const csvResponse = await fetch("data.csv");
             const csvText = await csvResponse.text();
             pyodide.globals.set("csv_text", csvText);
+            document.getElementById("output").textContent = "CSV loaded.";
 
             
             let titles = await pyodide.runPythonAsync(`
@@ -85,6 +87,7 @@ matrix.get_titles()
 
             let startMenu = document.getElementById("start");
             let endMenu = document.getElementById("end");
+            document.getElementById("output").textContent = "Loaded.";
 
             titles.forEach(t => {
                 startMenu.add(new Option(t, t));
