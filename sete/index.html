@@ -23,7 +23,7 @@ async function init() {
     const pyodide = await pyodideReady;
 
     // Charger script Python
-    const scriptResponse = await fetch("/../assets/script.py");
+    const scriptResponse = await fetch("../assets/script.py");
     const scriptCode = await scriptResponse.text();
     await pyodide.runPythonAsync(scriptCode);
 
