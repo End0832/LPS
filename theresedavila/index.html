@@ -71,6 +71,7 @@
 
             document.getElementById("output").textContent = "Loading Python...";
             const scriptResponse = await fetch("../assets/LPS_web.py");
+            console.log(scriptResponse.status);
             if (!scriptResponse.ok) alert("Python load failed: " + scriptResponse.status);
             const scriptCode = await scriptResponse.text();
             await pyodide.runPythonAsync(scriptCode);
@@ -78,6 +79,7 @@
 
             document.getElementById("output").textContent = "Loading CSV...";
             const csvResponse = await fetch("data.csv");
+            console.log(csvResponse.status);
             if (!csvResponse.ok) alert("CSV load failed: " + csvResponse.status);
             const csvText = await csvResponse.text();
             pyodide.globals.set("csv_text", csvText);
