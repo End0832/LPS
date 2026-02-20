@@ -70,13 +70,13 @@
 
 
             document.getElementById("output").textContent = "Loading Python...";
-            const scriptResponse = await fetch("../assets/LPS_web.py").then(r => r.ok ? r.text() : Promise.reject(r.status)).catch(e => console.error("Python load failed:", e));
+            const scriptResponse = await fetch("../assets/LPS_web.py").then(r => r.ok ? r.text() : Promise.reject(r.status)).catch(e => alert("Python load failed:", e));
             const scriptCode = await scriptResponse.text();
             await pyodide.runPythonAsync(scriptCode);
 
 
             document.getElementById("output").textContent = "Loading CSV...";
-            const csvResponse = await fetch("data.csv").then(r => r.ok ? r.text() : Promise.reject(r.status)).catch(e => console.error("CSV load failed:", e));
+            const csvResponse = await fetch("data.csv").then(r => r.ok ? r.text() : Promise.reject(r.status)).catch(e => alert("CSV load failed:", e));
             const csvText = await csvResponse.text();
             pyodide.globals.set("csv_text", csvText);
 
