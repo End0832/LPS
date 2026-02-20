@@ -2,47 +2,54 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Test Pyodide</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 </head>
 <body>
 
-<select id="menu1">
-    <option value="A">A</option>
-    <option value="B">B</option>
-</select>
+<select id="menu1"></select>
+<select id="menu2"></select>
 
-<select id="menu2">
-    <option value="1">1</option>
-    <option value="2">2</option>
-</select>
-
-<button onclick="runLPS()">Travel</button>
+<button onclick="run()">Afficher sélection</button>
 
 <pre id="output"></pre>
 
 <script>
 let pyodideReady = loadPyodide();
 
-async function runLPS() {
+async function initMenus() {
     const pyodide = await pyodideReady;
 
-    const val1 = document.getElementById("menu1").value;
-    const val2 = document.getElementById("menu2").value;
-
-    // Charger le fichier script.py
     const response = await fetch("script.py");
     const code = await response.text();
 
-    // Injecter les valeurs dans Python
-    pyodide.globals.set("val1", val1);
-    pyodide.globals.set("val2", val2);
+    let titles = await pyodide.runPythonAsync(code);
 
-    // Exécuter le script
-    let result = await pyodide.runPythonAsync(code);
+    // Remplir les deux menus
+    let menu1 = document.getElementById("menu1");
+    let menu2 = document.getElementById("menu2");
 
-    document.getElementById("output").textContent = result;
+    titles.forEach(item => {
+        let opt1 = document.createElement("option");
+        opt1.value = item;
+        opt1.text = item;
+        menu1.appendChild(opt1);
+
+        let opt2 = document.createElement("option");
+        opt2.value = item;
+        opt2.text = item;
+        menu2.appendChild(opt2);
+    });
 }
+
+async function run() {
+    let val1 = document.getElementById("menu1").value;
+    let val2 = document.getElementById("menu2").value;
+
+    document.getElementById("output").textContent =
+        "Choix : " + val1 + " → " + val2;
+}
+
+initMenus();
 </script>
 
 </body>
