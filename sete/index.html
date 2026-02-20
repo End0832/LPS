@@ -2,17 +2,18 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dijkstra avec Pyodide</title>
+    <title>LPS</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 </head>
 <body>
 
-<h3>Calcul du plus court chemin</h3>
+<h1>LPS</h1>
+<h3>Local Positioning System</h3>
 
 <select id="start"></select>
 <select id="end"></select>
 
-<button onclick="runDijkstra()">Calculer</button>
+<button onclick="runLPS()">Travel</button>
 
 <pre id="output"></pre>
 
@@ -35,8 +36,8 @@ async function init() {
 
     // Récupérer les titres depuis Python
     let titles = await pyodide.runPythonAsync(`
-m = Matrix(csv_text)
-m.get_titles()
+matrix = Matrix(csv_text)
+matrix.get_titles()
 `);
 
     let startMenu = document.getElementById("start");
@@ -48,7 +49,7 @@ m.get_titles()
     });
 }
 
-async function runDijkstra() {
+async function runLPS() {
     const pyodide = await pyodideReady;
 
     let start = document.getElementById("start").value;
@@ -58,14 +59,10 @@ async function runDijkstra() {
     pyodide.globals.set("end_name", end);
 
     let result = await pyodide.runPythonAsync(`
-m = Matrix(csv_text)
-m.fill()
+matrix = Matrix(csv_text)
 
-start_index = m.title_position(start_name)
-end_index = m.title_position(end_name)
-
-d = Dijkstra(m.get(), m.get_titles())
-d.get(start_index, end_index)
+lps = Dijkstra(m.get(), m.get_titles())
+lps.get(matrix.title_position(start_name), matrix.title_position(end_name))
 `);
 
     document.getElementById("output").textContent = result;
