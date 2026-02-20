@@ -1,97 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>LPS</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
     <style>
-        body {
-            border: 5px solid red
+        /* Reset and base styles */
+        * {
             margin: 0;
-            height: 100vh;
-            background-image: url("https://end0832.github.io/LPS/assets/background.jpg");
-            background-size: cover;       /* couvre tout l'écran */
-            background-position: center;  /* centre l'image */
-            background-repeat: no-repeat; /* pas de répétition */
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
             font-family: Arial, sans-serif;
-            color: white;
+            color: #ffffff;
+            background-image: url("https://end0832.github.io/LPS/assets/background.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .content {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
-            /*background: rgba(0, 0, 0, 0.4); /* léger voile sombre */
+            background: rgba(0, 0, 0, 0.4); /* subtle overlay for readability */
+            text-align: center;
+            padding: 20px;
+        }
+
+        select, button {
+            margin: 10px;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+
+        pre {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-<div class="content">
-<h1>LPS</h1>
-<h3>Local Positioning System</h3>
+    <div class="content">
+        <h1>LPS</h1>
+        <h3>Local Positioning System</h3>
 
-<select id="start"></select>
-<select id="end"></select>
+        <select id="start"></select>
+        <select id="end"></select>
 
-<button onclick="runLPS()">Travel</button>
+        <button onclick="runLPS()">Travel</button>
 
-<pre id="output"></pre>
+        <pre id="output"></pre>
+    </div>
 
-<script>
-let pyodideReady = loadPyodide();
+    <script>
+        let pyodideReady = loadPyodide();
 
-async function init() {
-    const pyodide = await pyodideReady;
+        async function init() {
+            const pyodide = await pyodideReady;
 
-    // Charger script Python
-    const scriptResponse = await fetch("../assets/LPS_web.py");
-    const scriptCode = await scriptResponse.text();
-    await pyodide.runPythonAsync(scriptCode);
+            // Load Python script
+            const scriptResponse = await fetch("../assets/LPS_web.py");
+            const scriptCode = await scriptResponse.text();
+            await pyodide.runPythonAsync(scriptCode);
 
-    // Charger CSV
-    const csvResponse = await fetch("data.csv");
-    const csvText = await csvResponse.text();
+            // Load CSV
+            const csvResponse = await fetch("data.csv");
+            const csvText = await csvResponse.text();
+            pyodide.globals.set("csv_text", csvText);
 
-    pyodide.globals.set("csv_text", csvText);
-
-    // Récupérer les titres depuis Python
-    let titles = await pyodide.runPythonAsync(`
+            // Populate dropdowns
+            let titles = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 matrix.get_titles()
 `);
 
-    let startMenu = document.getElementById("start");
-    let endMenu = document.getElementById("end");
+            let startMenu = document.getElementById("start");
+            let endMenu = document.getElementById("end");
 
-    titles.forEach(t => {
-        startMenu.add(new Option(t, t));
-        endMenu.add(new Option(t, t));
-    });
-}
+            titles.forEach(t => {
+                startMenu.add(new Option(t, t));
+                endMenu.add(new Option(t, t));
+            });
+        }
 
-async function runLPS() {
-    const pyodide = await pyodideReady;
+        async function runLPS() {
+            const pyodide = await pyodideReady;
 
-    let start = document.getElementById("start").value;
-    let end = document.getElementById("end").value;
+            let start = document.getElementById("start").value;
+            let end = document.getElementById("end").value;
 
-    pyodide.globals.set("start_name", start);
-    pyodide.globals.set("end_name", end);
+            pyodide.globals.set("start_name", start);
+            pyodide.globals.set("end_name", end);
 
-    let result = await pyodide.runPythonAsync(`
+            let result = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
-
 lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.title_position(start_name), matrix.title_position(end_name))
 `);
 
-    document.getElementById("output").textContent = result;
-}
+            document.getElementById("output").textContent = result;
+        }
 
-init();
-</script>
-
-</div>
+        init();
+    </script>
 </body>
 </html>
