@@ -8,17 +8,27 @@ if mod == "local":
 from math import inf
 
 class Matrix():
-    def __init__(self, name):
+    def __init__(self, csv):
         self.csv = []
         self.titles = []
-        with open(name, "r", encoding="utf-8") as f:
-            f = f.readlines()
+        if mod == "local":
+            with open(csv, "r", encoding="utf-8") as f:
+                f = f.readlines()
+                for i in range(1, len(f)):
+                    self.csv.append(f[i].strip("\n").split(","))
+                for i in range(0, len(self.csv)):
+                    self.titles.append(self.csv[i][0])
+                    self.titles.append(self.csv[i][1])
+                self.titles = sorted(set(self.titles))
+
+        else:
+            f = name.splitlines()
             for i in range(1, len(f)):
                 self.csv.append(f[i].strip("\n").split(","))
-            for i in range(0, len(self.csv)):
-                self.titles.append(self.csv[i][0])
-                self.titles.append(self.csv[i][1])
-            self.titles = sorted(set(self.titles))
+                for i in range(0, len(self.csv)):
+                    self.titles.append(self.csv[i][0])
+                    self.titles.append(self.csv[i][1])
+                self.titles = sorted(set(self.titles))
             
         self.matrix = []
         for _ in range(0, len(self.titles)):
@@ -171,4 +181,5 @@ if mod == "local":
     
     window.show()
     app.exec()
+
 
