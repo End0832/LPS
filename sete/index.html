@@ -5,7 +5,6 @@
     <title>LPS</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
     <style>
-        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +27,7 @@
             justify-content: center;
             align-items: center;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* subtle overlay for readability */
+            background: rgba(0, 0, 0, 0.4); 
             text-align: center;
             padding: 20px;
         }
@@ -68,17 +67,17 @@
         async function init() {
             const pyodide = await pyodideReady;
 
-            // Load Python script
+            
             const scriptResponse = await fetch("../assets/LPS_web.py");
             const scriptCode = await scriptResponse.text();
             await pyodide.runPythonAsync(scriptCode);
 
-            // Load CSV
+            
             const csvResponse = await fetch("data.csv");
             const csvText = await csvResponse.text();
             pyodide.globals.set("csv_text", csvText);
 
-            // Populate dropdowns
+            
             let titles = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 matrix.get_titles()
