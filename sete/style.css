@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    background-image: url("https://end0832.github.io/LPS/assets/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    text-align: center;
+    padding: 20px;
+}
+
+select, button {
+    margin: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+pre {
+    margin-top: 20px;
+    text-align: left;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    max-width: 90%;
+
+    white-space: pre-wrap;
+}
