@@ -2,54 +2,76 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <title>Dijkstra avec Pyodide</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 </head>
 <body>
 
-<select id="menu1"></select>
-<select id="menu2"></select>
+<h3>Calcul du plus court chemin</h3>
 
-<button onclick="run()">Afficher sélection</button>
+<select id="start"></select>
+<select id="end"></select>
+
+<button onclick="runDijkstra()">Calculer</button>
 
 <pre id="output"></pre>
 
 <script>
 let pyodideReady = loadPyodide();
 
-async function initMenus() {
+async function init() {
     const pyodide = await pyodideReady;
 
-    const response = await fetch("script.py");
-    const code = await response.text();
+    // Charger script Python
+    const scriptResponse = await fetch("/../assets/script.py");
+    const scriptCode = await scriptResponse.text();
+    await pyodide.runPythonAsync(scriptCode);
 
-    let titles = await pyodide.runPythonAsync(code);
+    // Charger CSV
+    const csvResponse = await fetch("data.csv");
+    const csvText = await csvResponse.text();
 
-    // Remplir les deux menus
-    let menu1 = document.getElementById("menu1");
-    let menu2 = document.getElementById("menu2");
+    pyodide.globals.set("csv_text", csvText);
 
-    titles.forEach(item => {
-        let opt1 = document.createElement("option");
-        opt1.value = item;
-        opt1.text = item;
-        menu1.appendChild(opt1);
+    // Récupérer les titres depuis Python
+    let titles = await pyodide.runPythonAsync(`
+m = Matrix(csv_text)
+m.get_titles()
+`);
 
-        let opt2 = document.createElement("option");
-        opt2.value = item;
-        opt2.text = item;
-        menu2.appendChild(opt2);
+    let startMenu = document.getElementById("start");
+    let endMenu = document.getElementById("end");
+
+    titles.forEach(t => {
+        startMenu.add(new Option(t, t));
+        endMenu.add(new Option(t, t));
     });
 }
 
-async function run() {
-    let val1 = document.getElementById("menu1").value;
-    let val2 = document.getElementById("menu2").value;
+async function runDijkstra() {
+    const pyodide = await pyodideReady;
 
-    document.getElementById("output").textContent =
-        "Choix : " + val1 + " → " + val2;
+    let start = document.getElementById("start").value;
+    let end = document.getElementById("end").value;
+
+    pyodide.globals.set("start_name", start);
+    pyodide.globals.set("end_name", end);
+
+    let result = await pyodide.runPythonAsync(`
+m = Matrix(csv_text)
+m.fill()
+
+start_index = m.title_position(start_name)
+end_index = m.title_position(end_name)
+
+d = Dijkstra(m.get(), m.get_titles())
+d.get(start_index, end_index)
+`);
+
+    document.getElementById("output").textContent = result;
 }
 
-initMenus();
+init();
 </script>
 
 </body>
