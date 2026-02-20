@@ -1,14 +1,23 @@
 let subdomain = window.location.pathname.split("/").filter(s => s.length > 0)
 subdomain = subdomain[subdomain.length - 1]
 
-document.getElementById("output").textContent = "Loading Pyodide...";
+function print(text, arg) {
+    if (arg === "add") {
+        document.getElementById("output").textContent = document.getElementById("output").textContent + "\n" + text;
+    }
+    if (arg === "replace") {
+        document.getElementById("output").textContent = text;
+    }
+}
+
+print("Loading Pyodide...", "add");
 let pyodideReady = loadPyodide();
 
 async function init() {
     const pyodide = await pyodideReady;
 
 
-    document.getElementById("output").textContent = "Loading Python...";
+    print("Loading Python...", "add");
     const scriptResponse = await fetch("../assets/LPS_web.py");
     if (!scriptResponse.ok) document.getElementById("output").textContent = "Loading failed.";
     if (!scriptResponse.ok) alert("Python load failed: " + scriptResponse.status);
@@ -16,7 +25,7 @@ async function init() {
     await pyodide.runPythonAsync(scriptCode);
 
 
-    document.getElementById("output").textContent = "Loading CSV...";
+    print("Loading CSV...", "add");
     const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
     if (!csvResponse.ok) document.getElementById("output").textContent = "Loading failed.";
     if (!csvResponse.ok) alert("CSV load failed: " + csvResponse.status);
@@ -31,7 +40,7 @@ matrix.get_titles()
 
     let startMenu = document.getElementById("start");
     let endMenu = document.getElementById("end");
-    document.getElementById("output").textContent = "Loaded.";
+    print("Loaded.", "replace");
 
     titles.forEach(t => {
         startMenu.add(new Option(t, t));
