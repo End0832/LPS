@@ -1,6 +1,6 @@
 try:
     mod = mod
-except:
+except NameError:
     mod = "local"
 
 if mod == "local":
@@ -171,3 +171,4 @@ if mod == "local":
     
     window.show()
     app.exec()
+
