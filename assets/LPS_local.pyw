@@ -1,3 +1,8 @@
+try:
+    mod = mod
+except:
+    mod = "local"
+
 if mod == "local":
     from PySide6 import QtWidgets as qw
 from math import inf
@@ -14,13 +19,15 @@ class Matrix():
                 self.titles.append(self.csv[i][0])
                 self.titles.append(self.csv[i][1])
             self.titles = sorted(set(self.titles))
-        
+            
         self.matrix = []
         for _ in range(0, len(self.titles)):
             nested_list = []
             for _ in range(0, len(self.titles)):
                 nested_list.append(inf)
             self.matrix.append(nested_list)
+
+        self.fill()
 
     def get_titles(self):
         return self.titles
@@ -130,42 +137,37 @@ class Dijkstra():
 
         path_str = self.chain_loc[0]
         for i in range(1, len(self.chain_loc)):
-            path_str = path_str + "  " + self.chain_loc[i]
+            path_str = path_str + " ➙ " + self.chain_loc[i]
             
         return f"TIME: {time}\nPATH: {path_str}"
 
 
-
-matrix = Matrix("data.csv")
-matrix.fill()
-
-gps = Dijkstra(matrix.get(), matrix.get_titles())
-
-print(matrix.get_titles())
-
-
-
-app = qw.QApplication([])
-window = qw.QWidget()
-window.setWindowTitle("GPS")
-window.resize(190, 100)
-
-layout = qw.QVBoxLayout(window)
-
-from_box = qw.QComboBox()
-to_box = qw.QComboBox()
-button = qw.QPushButton()
-
-from_box.addItems(matrix.get_titles())
-to_box.addItems(matrix.get_titles())
-button.setText("Travel")
-
-layout.addWidget(from_box)
-layout.addWidget(to_box)
-layout.addWidget(button)
-
-button.clicked.connect(lambda: qw.QMessageBox.information(None, "GPS", gps.get(from_box.currentIndex(), to_box.currentIndex())))
-
-window.show()
-app.exec()
-
+if mod == "local":
+    matrix = Matrix("data.csv")
+    lps = Dijkstra(matrix.get(), matrix.get_titles())
+    
+    
+    
+    app = qw.QApplication([])
+    window = qw.QWidget()
+    window.setWindowTitle("LPS")
+    window.resize(190, 100)
+    
+    layout = qw.QVBoxLayout(window)
+    
+    from_box = qw.QComboBox()
+    to_box = qw.QComboBox()
+    button = qw.QPushButton()
+    
+    from_box.addItems(matrix.get_titles())
+    to_box.addItems(matrix.get_titles())
+    button.setText("Travel")
+    
+    layout.addWidget(from_box)
+    layout.addWidget(to_box)
+    layout.addWidget(button)
+    
+    button.clicked.connect(lambda: qw.QMessageBox.information(None, "LPS", lps.get(from_box.currentIndex(), to_box.currentIndex())))
+    
+    window.show()
+    app.exec()
