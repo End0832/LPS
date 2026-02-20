@@ -4,52 +4,7 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LPS</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: Arial, sans-serif;
-            color: #ffffff;
-            background-image: url("https://end0832.github.io/LPS/assets/background.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4); 
-            text-align: center;
-            padding: 20px;
-        }
-
-        select, button {
-            margin: 10px;
-            padding: 5px 10px;
-            font-size: 16px;
-        }
-
-        pre {
-            margin-top: 20px;
-            text-align: left;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            max-width: 90%;
-
-            white-space: pre-wrap;
-        }
-    </style>
+    <style src="style.css"></style>
 </head>
 <body>
     <div class="content">
@@ -64,64 +19,6 @@
         <pre id="output">Loading...</pre>
     </div>
 
-    <script>
-        document.getElementById("output").textContent = "Loading Pyodide...";
-        let pyodideReady = loadPyodide();
-
-        async function init() {
-            const pyodide = await pyodideReady;
-
-
-            document.getElementById("output").textContent = "Loading Python...";
-            const scriptResponse = await fetch("../assets/LPS_web.py");
-            if (!scriptResponse.ok) document.getElementById("output").textContent = "Loading failed.";
-            if (!scriptResponse.ok) alert("Python load failed: " + scriptResponse.status);
-            const scriptCode = await scriptResponse.text();
-            await pyodide.runPythonAsync(scriptCode);
-
-
-            document.getElementById("output").textContent = "Loading CSV...";
-            const csvResponse = await fetch("data.csv");
-            if (!csvResponse.ok) document.getElementById("output").textContent = "Loading failed.";
-            if (!csvResponse.ok) alert("CSV load failed: " + csvResponse.status);
-            const csvText = await csvResponse.text();
-            pyodide.globals.set("csv_text", csvText);
-
-            
-            let titles = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text)
-matrix.get_titles()
-`);
-
-            let startMenu = document.getElementById("start");
-            let endMenu = document.getElementById("end");
-            document.getElementById("output").textContent = "Loaded.";
-
-            titles.forEach(t => {
-                startMenu.add(new Option(t, t));
-                endMenu.add(new Option(t, t));
-            });
-        }
-
-        async function runLPS() {
-            const pyodide = await pyodideReady;
-
-            let start = document.getElementById("start").value;
-            let end = document.getElementById("end").value;
-
-            pyodide.globals.set("start_name", start);
-            pyodide.globals.set("end_name", end);
-
-            let result = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text)
-lps = Dijkstra(matrix.get(), matrix.get_titles())
-lps.get(matrix.title_position(start_name), matrix.title_position(end_name))
-`);
-
-            document.getElementById("output").textContent = result;
-        }
-
-        init();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
