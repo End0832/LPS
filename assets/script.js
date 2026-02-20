@@ -38,6 +38,7 @@ async function init() {
 
     
     let titles = await pyodide.runPythonAsync(`
+mod = "web"
 matrix = Matrix(csv_text)
 matrix.get_titles()
 `);
@@ -55,19 +56,20 @@ matrix.get_titles()
 async function runLPS() {
     const pyodide = await pyodideReady;
 
-    let start = document.getElementById("start").value;
-    let end = document.getElementById("end").value;
+    let from = document.getElementById("from").value;
+    let to = document.getElementById("to").value;
 
-    pyodide.globals.set("start_name", start);
-    pyodide.globals.set("end_name", end);
+    pyodide.globals.set("from", from);
+    pyodide.globals.set("to", to);
 
     let result = await pyodide.runPythonAsync(`
+mod = "web"
 matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
-lps.get(matrix.title_position(start_name), matrix.title_position(end_name))
+lps.get(matrix.title_position(from), matrix.title_position(to))
 `);
 
-    document.getElementById("output").textContent = result;
+    print(result, "replace");
 }
 
 init();
