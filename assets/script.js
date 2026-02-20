@@ -18,17 +18,21 @@ async function init() {
 
 
     print("Loading Python...", "add");
-    const scriptResponse = await fetch("../assets/LPS_web.py");
-    if (!scriptResponse.ok) document.getElementById("output").textContent = "Loading failed.";
-    if (!scriptResponse.ok) alert("Python load failed: " + scriptResponse.status);
+    const scriptResponse = await fetch("../assets/LPS.py");
+    if (!scriptResponse.ok) {
+        print("Loading failed.", "replace");
+        alert("Python load failed: " + scriptResponse.status);
+    }
     const scriptCode = await scriptResponse.text();
     await pyodide.runPythonAsync(scriptCode);
 
 
     print("Loading CSV...", "add");
     const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
-    if (!csvResponse.ok) document.getElementById("output").textContent = "Loading failed.";
-    if (!csvResponse.ok) alert("CSV load failed: " + csvResponse.status);
+    if (!csvResponse.ok) {
+        print("Loading failed.", "replace");
+        alert("CSV load failed: " + csvResponse.status);
+    }
     const csvText = await csvResponse.text();
     pyodide.globals.set("csv_text", csvText);
 
