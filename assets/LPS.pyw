@@ -2,6 +2,7 @@ try:
     mod = mod
 except NameError:
     mod = "local"
+global mod
 
 if mod == "local":
     from PySide6 import QtWidgets as qw
@@ -181,5 +182,6 @@ if mod == "local":
     
     window.show()
     app.exec()
+
 
 
