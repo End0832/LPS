@@ -1,4 +1,5 @@
-from PySide6 import QtWidgets as qw
+if mod == "local":
+    from PySide6 import QtWidgets as qw
 from math import inf
 
 class Matrix():
@@ -129,7 +130,7 @@ class Dijkstra():
 
         path_str = self.chain_loc[0]
         for i in range(1, len(self.chain_loc)):
-            path_str = path_str + " -> " + self.chain_loc[i]
+            path_str = path_str + "  " + self.chain_loc[i]
             
         return f"TIME: {time}\nPATH: {path_str}"
 
@@ -167,3 +168,4 @@ button.clicked.connect(lambda: qw.QMessageBox.information(None, "GPS", gps.get(f
 
 window.show()
 app.exec()
+
