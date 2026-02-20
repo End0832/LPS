@@ -81,7 +81,7 @@ async function runLPS() {
     let result = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 
-lps = Dijkstra(m.get(), m.get_titles())
+lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.title_position(start_name), matrix.title_position(end_name))
 `);
 
