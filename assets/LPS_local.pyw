@@ -139,7 +139,7 @@ class Dijkstra():
 
         path_str = self.chain_loc[0]
         for i in range(1, len(self.chain_loc)):
-            path_str = path_str + " -> " + self.chain_loc[i]
+            path_str = path_str + " ➙ " + self.chain_loc[i]
             
         return f"TIME: {time}\nPATH: {path_str}"
 
