@@ -10,7 +10,7 @@ function print(text, arg) {
     }
 }
 
-print("Loading Pyodide...", "add");
+print("Loading Pyodide...", "replace");
 let pyodideReady = loadPyodide();
 
 async function init() {
