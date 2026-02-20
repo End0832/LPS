@@ -61,9 +61,9 @@ async function runLPS() {
 
     pyodide.globals.set("from", from);
     pyodide.globals.set("to", to);
+    pyodide.globals.set("mod", "web")
 
     let result = await pyodide.runPythonAsync(`
-mod = "web"
 matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.title_position(from), matrix.title_position(to))
