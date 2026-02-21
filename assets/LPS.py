@@ -70,9 +70,6 @@ class Matrix():
                         ways.append((self.csv[i][1], self.csv[i][0], self.csv[i][2]))
         return ways
 
-    
-
-    
 
 
 class Dijkstra():
@@ -133,27 +130,24 @@ class Dijkstra():
         self.get_roads()
         self.get_shortest_path()
         self.get_locations()
-        seconds = self.cost_for_ends[self.end]
-        
-        if seconds < 60:
-            time = str(seconds) + " s"
-        else:
-            minutes = 0
-            minutes, seconds = divmod(seconds, 60)
-            time = str(minutes) + " min " + str(seconds) + " s"
+        raw_time = self.cost_for_ends[self.end]
+
+        raw_time = divmod(raw_time, 60)
+        time_str = ""
+        time_letters = ("h", "min", "s")
+        for i in range(len(raw_time)):
+            if raw_time[i] != 0:
+                time_str = time_str + f"{raw_time[i]} {time_letters[i]} ")
 
         path_str = self.chain_loc[0]
         for i in range(1, len(self.chain_loc)):
             path_str = path_str + " ➙ " + self.chain_loc[i]
             
-        return f"TIME: {time}\nPATH: {path_str}"
-
+        return f"TIME: {time_str}\nPATH: {path_str}"
 
 if local:
     matrix = Matrix("data.csv")
     lps = Dijkstra(matrix.get(), matrix.get_titles())
-    
-    
     
     app = qw.QApplication([])
     window = qw.QWidget()
@@ -178,6 +172,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
