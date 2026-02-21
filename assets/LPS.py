@@ -42,7 +42,7 @@ class Matrix():
     def fill(self):
         for a, b, c in self.csv:
             a = self.get_title_pos(a)
-            b = self.get.title_pos(b)
+            b = self.get_title_pos(b)
             self.matrix[a][b] = int(c)
             self.matrix[b][a] = int(c)
         for i in range(len(self.matrix)):
@@ -159,6 +159,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
