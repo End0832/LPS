@@ -1,8 +1,11 @@
 try:
-    mode = mode
+    local = local
 except NameError:
-    mode = "local"
-    global mode
+    local = True
+
+global local
+
+if local:
     from PySide6 import QtWidgets as qw
 
 from math import inf
@@ -11,7 +14,7 @@ class Matrix():
     def __init__(self, csv):
         self.csv = []
         self.titles = []
-        if mode == "local":
+        if local:
             with open(csv, "r", encoding="utf-8") as f:
                 f = f.readlines()
         else:
@@ -146,7 +149,7 @@ class Dijkstra():
         return f"TIME: {time}\nPATH: {path_str}"
 
 
-if mode == "local":
+if local:
     matrix = Matrix("data.csv")
     lps = Dijkstra(matrix.get(), matrix.get_titles())
     
@@ -175,3 +178,4 @@ if mode == "local":
     
     window.show()
     app.exec()
+
