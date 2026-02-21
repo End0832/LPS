@@ -36,11 +36,10 @@ async function init() {
     }
     const csvText = await csvResponse.text();
     pyodide.globals.set("csv_text", csvText);
-    pyodide.globals.set("mode", "web")
 
     
     let titles = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text, mode)
+matrix = Matrix(csv_text)
 matrix.get_titles()
 `);
 
@@ -57,17 +56,16 @@ matrix.get_titles()
 async function runLPS() {
     const pyodide = await pyodideReady;
 
-    let from = document.getElementById("from_box").value;
-    let to = document.getElementById("to_box").value;
+    let fromBoxVal = document.getElementById("from_box").value;
+    let toBoxVal = document.getElementById("to_box").value;
 
-    pyodide.globals.set("from", from);
-    pyodide.globals.set("to", to);
-    pyodide.globals.set("mode", "web")
+    pyodide.globals.set("from_box_val", fromBoxVal);
+    pyodide.globals.set("to_box_val", toBoxVal);
 
     let result = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text, mode)
+matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
-lps.get(matrix.title_position(from), matrix.title_position(to))
+lps.get(matrix.title_position(from_box_val), matrix.title_position(to_box_val))
 `);
 
     print(result, "replace");
