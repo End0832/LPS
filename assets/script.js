@@ -52,9 +52,8 @@ async function init() {
         print("Loading failed.", "replace");
         alert("CSV load failed: " + err.status);
         lock = true
-    
-    print("Loaded.", "replace");
     }
+    print("Loaded.", "replace");
 }
 
 async function runLPS() {
