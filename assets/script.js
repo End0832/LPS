@@ -18,6 +18,7 @@ async function init() {
     } catch(err) {
         print("Loading failed.", "replace");
         alert("Pyodide load failed: " + err.message);
+        location.reload
     }
 
     print("Loading Python...", "add");
@@ -29,6 +30,7 @@ async function init() {
     } catch(err) {
         print("Loading failed.", "replace");
         alert("Python load failed: " + err.message);
+        location.reload
     }
 
 
@@ -51,6 +53,7 @@ async function init() {
     } catch(err) {
         print("Loading failed.", "replace");
         alert("CSV load failed: " + err.message);
+        location.reload
     }
     
     print("Loaded.", "replace");
