@@ -134,7 +134,7 @@ class Dijkstra():
 
         raw_time = divmod(raw_time, 60)
         time_str = ""
-        time_letters = ("h", "min", "s")
+        time_letters = ("min", "s")
         for i in range(len(raw_time)):
             if raw_time[i] != 0:
                 time_str = time_str + f"{raw_time[i]} {time_letters[i]} ")
@@ -172,6 +172,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
