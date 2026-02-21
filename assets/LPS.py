@@ -40,16 +40,14 @@ class Matrix():
         return matrix
 
     def fill(self):
+        for a, b, c in self.csv:
+            a = self.get_title_pos(a)
+            b = self.get.title_pos(b)
+            self.matrix[a][b] = int(c)
+            self.matrix[b][a] = int(c)
         for i in range(len(self.matrix)):
-            ways = self.get_ways(self.titles[i])
-            for j in range(len(ways)):
-                a, b, c = ways[j]
-                a = self.get_title_pos(a)
-                b = self.get_title_pos(b)
-                self.matrix[a][b] = int(c)
-                self.matrix[b][a] = int(c)
             self.matrix[i][i] = 0
-    
+            
     def get(self):
         return self.matrix
 
@@ -58,17 +56,6 @@ class Matrix():
 
     def get_title_pos(self, title):
         return self.titles.index(title)
-
-    def get_ways(self, val):
-        ways = []
-        for i in range(len(self.csv)):
-            for j in range(len(self.csv[i]) - 1):
-                if self.csv[i][j] == val:
-                    if j == 0:
-                        ways.append((self.csv[i][0], self.csv[i][1], self.csv[i][2]))
-                    if j == 1:
-                        ways.append((self.csv[i][1], self.csv[i][0], self.csv[i][2]))
-        return ways
 
 
 
@@ -172,6 +159,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
