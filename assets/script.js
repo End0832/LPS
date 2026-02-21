@@ -19,7 +19,6 @@ async function init() {
         print("Loading failed.", "replace");
         alert("Pyodide load failed: " + err.message);
     }
-}
 
     print("Loading Python...", "add");
     try {
