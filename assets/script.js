@@ -11,48 +11,50 @@ function print(text, arg) {
 }
 
 print("Loading Pyodide...", "replace");
-let pyodideReady = loadPyodide();
-
-async function init() {
-    const pyodide = await pyodideReady;
-
+try {
+    let pyodideReady = loadPyodide();
+    
+    async function init() {
+        const pyodide = await pyodideReady;
+} catch(err) {
+    print("Loading failed.", "replace");
+    alert("Pyodide load failed: " + err.message);
+}
 
     print("Loading Python...", "add");
-    const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.py");
-    if (!scriptResponse.ok) {
+    try {
+        const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.py");
+        await pyodide.runPythonAsync(`local = False`);
+        const scriptCode = await scriptResponse.text();
+        await pyodide.runPythonAsync(scriptCode);
+    } catch(err) {
         print("Loading failed.", "replace");
-        alert("Python load failed: " + scriptResponse.status);
+        alert("Python load failed: " + err.message);
     }
-    await pyodide.runPythonAsync(`
-    local = False
-    `);
-    const scriptCode = await scriptResponse.text();
-    await pyodide.runPythonAsync(scriptCode);
 
 
     print("Loading CSV...", "add");
-    const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
-    if (!csvResponse.ok) {
-        print("Loading failed.", "replace");
-        alert("CSV load failed: " + csvResponse.status);
-    }
-    const csvText = await csvResponse.text();
-    pyodide.globals.set("csv_text", csvText);
+    try {
+        const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
+        const csvText = await csvResponse.text();
+        pyodide.globals.set("csv_text", csvText);
 
+        let titles = await pyodide.runPythonAsync(`matrix = Matrix(csv_text)\nmatrix.get_titles()`);
     
-    let titles = await pyodide.runPythonAsync(`
-matrix = Matrix(csv_text)
-matrix.get_titles()
-`);
+        let fromBox = document.getElementById("from_box");
+        let toBox = document.getElementById("to_box");
 
-    let fromBox = document.getElementById("from_box");
-    let toBox = document.getElementById("to_box");
+        titles.forEach(t => {
+            fromBox.add(new Option(t, t));
+            toBox.add(new Option(t, t));
+        });
+
+    } catch(err) {
+        print("Loading failed.", "replace");
+        alert("CSV load failed: " + err.message);
+    }
+    
     print("Loaded.", "replace");
-
-    titles.forEach(t => {
-        fromBox.add(new Option(t, t));
-        toBox.add(new Option(t, t));
-    });
 }
 
 async function runLPS() {
