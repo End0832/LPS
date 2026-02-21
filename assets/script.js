@@ -18,16 +18,15 @@ async function init() {
 
 
     print("Loading Python...", "add");
-    const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.py");
-    if (!scriptResponse.ok) {
+    try {
+        const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.py");
+        await pyodide.runPythonAsync(`local = False`);
+        const scriptCode = await scriptResponse.text();
+        await pyodide.runPythonAsync(scriptCode);
+    } catch(err) {
         print("Loading failed.", "replace");
-        alert("Python load failed: " + scriptResponse.status);
+        alert("Python load failed: " + err.message);
     }
-    await pyodide.runPythonAsync(`
-    local = False
-    `);
-    const scriptCode = await scriptResponse.text();
-    await pyodide.runPythonAsync(scriptCode);
 
 
     print("Loading CSV...", "add");
