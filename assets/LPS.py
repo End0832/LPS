@@ -8,7 +8,7 @@ if mode == "local":
 from math import inf
 
 class Matrix():
-    def __init__(self, csv, mode):
+    def __init__(self, csv):
         self.csv = []
         self.titles = []
         if mode == "local":
@@ -147,7 +147,7 @@ class Dijkstra():
 
 
 if mode == "local":
-    matrix = Matrix("data.csv", mode)
+    matrix = Matrix("data.csv")
     lps = Dijkstra(matrix.get(), matrix.get_titles())
     
     
@@ -175,6 +175,7 @@ if mode == "local":
     
     window.show()
     app.exec()
+
 
 
 
