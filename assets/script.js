@@ -23,7 +23,9 @@ async function init() {
         print("Loading failed.", "replace");
         alert("Python load failed: " + scriptResponse.status);
     }
-    pyodide.globals.set("local", "False")
+    await pyodide.runPythonAsync(`
+    local = False
+    `);
     const scriptCode = await scriptResponse.text();
     await pyodide.runPythonAsync(scriptCode);
 
