@@ -11,14 +11,14 @@ function print(text, arg) {
 }
 
 print("Loading Pyodide...", "replace");
-try {
-    let pyodideReady = loadPyodide();
-    
-    async function init() {
+let pyodideReady = loadPyodide();
+async function init() {
+    try {
         const pyodide = await pyodideReady;
-} catch(err) {
-    print("Loading failed.", "replace");
-    alert("Pyodide load failed: " + err.message);
+    } catch(err) {
+        print("Loading failed.", "replace");
+        alert("Pyodide load failed: " + err.message);
+    }
 }
 
     print("Loading Python...", "add");
