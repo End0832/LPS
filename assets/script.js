@@ -67,7 +67,7 @@ async function runLPS() {
     let result = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
-lps.get(matrix.title_position(from_box_val), matrix.title_position(to_box_val))
+lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
 `);
 
     print(result, "replace");
