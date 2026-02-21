@@ -2,9 +2,9 @@ try:
     mode = mode
 except NameError:
     mode = "local"
-
-if mode == "local":
+    global mode
     from PySide6 import QtWidgets as qw
+
 from math import inf
 
 class Matrix():
@@ -175,12 +175,3 @@ if mode == "local":
     
     window.show()
     app.exec()
-
-
-
-
-
-
-
-
-
