@@ -117,14 +117,14 @@ class Dijkstra():
         self.get_roads()
         self.get_shortest_path()
         self.get_locations()
-        raw_time = self.cost_for_ends[self.end]
+        sec_time = self.cost_for_ends[self.end]
 
-        raw_time = divmod(raw_time, 60)
+        sec_time = divmod(sec_time, 60)
         time_str = ""
         time_letters = ("min", "s")
-        for i in range(len(raw_time)):
-            if raw_time[i] != 0:
-                time_str = time_str + f"{raw_time[i]} {time_letters[i]} "
+        for i in range(len(sec_time)):
+            if sec_time[i] != 0:
+                time_str = time_str + f"{sec_time[i]} {time_letters[i]} "
 
         path_str = self.chain_loc[0]
         for i in range(1, len(self.chain_loc)):
@@ -159,3 +159,4 @@ if local:
     
     window.show()
     app.exec()
+
