@@ -1,12 +1,15 @@
 let subdomain = window.location.pathname.split("/").filter(s => s.length > 0)
 subdomain = subdomain[subdomain.length - 1]
 
+lock = false
 function print(text, arg) {
-    if (arg === "add") {
-        document.getElementById("output").textContent = document.getElementById("output").textContent + "\n" + text;
-    }
-    if (arg === "replace") {
-        document.getElementById("output").textContent = text;
+    if (lock == false) {
+        if (arg === "add") {
+            document.getElementById("output").textContent = document.getElementById("output").textContent + "\n" + text;
+        }
+        if (arg === "replace") {
+            document.getElementById("output").textContent = text;
+        }
     }
 }
 
@@ -26,16 +29,13 @@ async function init() {
     } catch(err) {
         print("Loading failed.", "replace");
         alert("Python load failed: " + err.message);
+        lock = true
     }
 
 
     print("Loading CSV...", "add");
     try {
         const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
-        if (!csvResponse.ok) {
-            print("Loading failed.", "replace");
-            alert("CSV load failed: " + csvResponse.status);
-        }
         const csvText = await csvResponse.text();
         pyodide.globals.set("csv_text", csvText);
     
@@ -43,14 +43,17 @@ async function init() {
     
         let fromBox = document.getElementById("from_box");
         let toBox = document.getElementById("to_box");
-        print("Loaded.", "replace");
     
         titles.forEach(t => {
             fromBox.add(new Option(t, t));
             toBox.add(new Option(t, t));
         });
     } catch(err) {
-        a
+        print("Loading failed.", "replace");
+        alert("CSV load failed: " + err.status);
+        lock = true
+    
+    print("Loaded.", "replace");
     }
 }
 
