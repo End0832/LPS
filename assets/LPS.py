@@ -159,11 +159,3 @@ if local:
     
     window.show()
     app.exec()
-
-
-
-
-
-
-
-
