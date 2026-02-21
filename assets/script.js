@@ -23,6 +23,7 @@ async function init() {
         print("Loading failed.", "replace");
         alert("Python load failed: " + scriptResponse.status);
     }
+    pyodide.globals.set("mode", "web")
     const scriptCode = await scriptResponse.text();
     await pyodide.runPythonAsync(scriptCode);
 
