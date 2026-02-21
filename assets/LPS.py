@@ -3,8 +3,6 @@ try:
 except NameError:
     local = True
 
-global local
-
 if local:
     from PySide6 import QtWidgets as qw
 
@@ -20,7 +18,7 @@ class Matrix():
         csv = []
         titles = []
         if local:
-            with open(csv, "r", encoding="utf-8") as f:
+            with open(rcsv, "r", encoding="utf-8") as f:
                 f = f.readlines()
         else:
             f = rcsv.splitlines()
@@ -141,7 +139,7 @@ class Dijkstra():
             time = str(seconds) + " s"
         else:
             minutes = 0
-            minutes, seconds = devmod(seconds, 60)
+            minutes, seconds = divmod(seconds, 60)
             time = str(minutes) + " min " + str(seconds) + " s"
 
         path_str = self.chain_loc[0]
@@ -180,5 +178,6 @@ if local:
     
     window.show()
     app.exec()
+
 
 
