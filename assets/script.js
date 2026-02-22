@@ -83,4 +83,10 @@ lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
     print(result, "replace");
 }
 
-init();
+try {
+    init();
+} catch(err) {
+    print("Error.", "replace");
+    alert("Major Error:\n" + err.message);
+    lock = true;
+}
