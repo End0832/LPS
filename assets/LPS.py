@@ -25,7 +25,7 @@ class Matrix():
         for i in range(1, len(f)):
             csv.append(f[i].strip("\n").split(","))
         
-        raise Exception("CSV file is empty" + len(csv))
+        raise Exception("CSV file is empty" + str(len(csv)))
         for i in range(0, len(csv)):
             titles.append(csv[i][0])
             titles.append(csv[i][1])
@@ -161,6 +161,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
