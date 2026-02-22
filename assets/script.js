@@ -65,13 +65,17 @@ async function runLPS() {
     pyodide.globals.set("from_box_val", fromBoxVal);
     pyodide.globals.set("to_box_val", toBoxVal);
 
-    let result = await pyodide.runPythonAsync(`
+    try {
+        let result = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
-`);
-
-    print(result, "replace");
+    `);
+        print(result, "replace");
+    } catch(err) {
+        print("Error", "replace");
+        alert("Script running failed: " + err.status);
+    }
 }
 
 init();
