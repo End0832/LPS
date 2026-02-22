@@ -57,7 +57,7 @@ async function init() {
 
     print("Trying...", "replace");
     try {
-        runLPS();
+        await runLPS();
         print("Loaded.", "replace");
     } catch(err) {
         print("Error.", "replace");
