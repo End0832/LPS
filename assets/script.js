@@ -75,6 +75,7 @@ lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
     } catch(err) {
         print("Error", "replace");
         alert("Script running failed: " + err.status);
+        lock = true
     }
 }
 
