@@ -50,7 +50,7 @@ async function init() {
         });
     } catch(err) {
         print("Loading failed.", "replace");
-        alert("CSV load failed: " + err.status);
+        alert("CSV load failed: " + err.message);
         lock = true
     }
     print("Loaded.", "replace");
@@ -74,7 +74,7 @@ lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
         print(result, "replace");
     } catch(err) {
         print("Error", "replace");
-        alert("Script running failed: " + err.status);
+        alert("Script running failed: " + err.message);
         lock = true
     }
 }
