@@ -28,7 +28,7 @@ async function init() {
         await pyodide.runPythonAsync(scriptCode);
     } catch(err) {
         print("Loading failed.", "replace");
-        alert("Python load failed: " + err.message);
+        alert("Python load failed:\n" + err.message);
         lock = true
     }
 
@@ -50,7 +50,7 @@ async function init() {
         });
     } catch(err) {
         print("Loading failed.", "replace");
-        alert("CSV load failed: " + err.message);
+        alert("CSV load failed:\n" + err.message);
         lock = true
     }
 
@@ -61,7 +61,7 @@ async function init() {
         print("Loaded.", "replace");
     } catch(err) {
         print("Error.", "replace");
-        alert("Script running failed: " + err.message);
+        alert("Test failed:\n" + err.message);
         lock = true;
     }
 }
