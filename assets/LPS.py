@@ -30,7 +30,7 @@ class Matrix():
                 titles.append(csv[i][1])
             titles = sorted(set(titles))
         except:
-            raise Exception("CSV file is empty")
+            raise Exception("CSV file does not respect the expexted form.")
         return csv, titles
 
     def create_matrix(self, n):
@@ -162,6 +162,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
