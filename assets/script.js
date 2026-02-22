@@ -1,16 +1,21 @@
 let subdomain = window.location.pathname.split("/").filter(s => s.length > 0)
 subdomain = subdomain[subdomain.length - 1]
 
-lock = false
 function print(text, arg) {
-    if (lock == false) {
-        if (arg === "add") {
-            document.getElementById("output").textContent = document.getElementById("output").textContent + "\n" + text;
-        }
-        if (arg === "replace") {
-            document.getElementById("output").textContent = text;
-        }
+    if (arg === "add") {
+        document.getElementById("output").textContent = document.getElementById("output").textContent + "\n" + text;
     }
+    if (arg === "replace") {
+        document.getElementById("output").textContent = text;
+    }
+}
+
+let errored = false;
+function error(err, pmsg, amsg) {
+    errored = true;
+    print(pmsg, "replace");
+    alert(f"{amsg}:\n{err.message}");
+    throw err;
 }
 
 print("Loading Pyodide...", "replace");
@@ -27,9 +32,7 @@ async function init() {
         const scriptCode = await scriptResponse.text();
         await pyodide.runPythonAsync(scriptCode);
     } catch(err) {
-        print("Loading failed.", "replace");
-        alert("Python load failed:\n" + err.message);
-        lock = true
+        error(err, "Loading failed.", "Python load failed");
     }
 
 
@@ -49,9 +52,7 @@ async function init() {
             toBox.add(new Option(t, t));
         });
     } catch(err) {
-        print("Loading failed.", "replace");
-        alert("CSV load failed:\n" + err.message);
-        lock = true
+        error(err, "Loading failed.", "CSV load failed");
     }
 
 
@@ -60,9 +61,7 @@ async function init() {
         await runLPS();
         print("Loaded.", "replace");
     } catch(err) {
-        print("Error.", "replace");
-        alert("Test failed:\n" + err.message);
-        lock = true;
+        error(err, "Error.", "Test failed");
     }
 }
 
@@ -86,7 +85,7 @@ lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
 try {
     init();
 } catch(err) {
-    print("Error.", "replace");
-    alert("Major Error:\n" + err.message);
-    lock = true;
+    if (errored == false) {
+        error(err, "Error.", "Major error");
+    }
 }
