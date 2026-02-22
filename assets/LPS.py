@@ -22,6 +22,8 @@ class Matrix():
                 f = f.readlines()
         else:
             f = rcsv.splitlines()
+        if f == []:
+            raise Exception("CSV file is empty")
         for i in range(1, len(f)):
             csv.append(f[i].strip("\n").split(","))
         for i in range(0, len(csv)):
@@ -159,4 +161,5 @@ if local:
     
     window.show()
     app.exec()
+
 
