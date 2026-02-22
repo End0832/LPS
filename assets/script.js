@@ -55,7 +55,7 @@ async function init() {
     }
 
 
-    print("Trying...", "replace")
+    print("Trying...", "replace");
     try {
         runLPS();
         print("Loaded.", "replace");
