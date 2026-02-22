@@ -53,7 +53,17 @@ async function init() {
         alert("CSV load failed: " + err.message);
         lock = true
     }
-    print("Loaded.", "replace");
+
+
+    print("Trying...", "replace")
+    try {
+        runLPS();
+        print("Loaded.", "replace");
+    } catch(err) {
+        print("Error.", "replace");
+        alert("Script running failed: " + err.message);
+        lock = true;
+    }
 }
 
 async function runLPS() {
@@ -65,18 +75,12 @@ async function runLPS() {
     pyodide.globals.set("from_box_val", fromBoxVal);
     pyodide.globals.set("to_box_val", toBoxVal);
 
-    try {
-        let result = await pyodide.runPythonAsync(`
+    let result = await pyodide.runPythonAsync(`
 matrix = Matrix(csv_text)
 lps = Dijkstra(matrix.get(), matrix.get_titles())
 lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
-    `);
-        print(result, "replace");
-    } catch(err) {
-        print("Error", "replace");
-        alert("Script running failed: " + err.message);
-        lock = true
-    }
+`);
+    print(result, "replace");
 }
 
 init();
