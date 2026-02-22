@@ -12,7 +12,7 @@ function print(text, arg) {
 
 function error(err, pmsg, amsg) {
     print(pmsg, "replace");
-    alert(ˋ${amsg}:\n${err.message}ˋ);
+    alert(`${amsg}:\n${err.message}`);
     throw err;
 }
 
