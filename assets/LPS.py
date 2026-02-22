@@ -24,10 +24,8 @@ class Matrix():
             f = rcsv.splitlines()
         for i in range(1, len(f)):
             csv.append(f[i].strip("\n").split(","))
-        try:
-            csv[0][2]
-        except IndexError:
-            raise Exception("CSV file does not respect the expected form")
+        if len(csv) == 0:
+            raise Exception("CSV file is empty")
         for i in range(0, len(csv)):
             titles.append(csv[i][0])
             titles.append(csv[i][1])
@@ -163,6 +161,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
