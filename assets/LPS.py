@@ -21,15 +21,16 @@ class Matrix():
             with open(rcsv, "r", encoding="utf-8") as f:
                 f = f.readlines()
         else:
-            f = rcsv.splitlines()
-        if len(f) == 0:
+            f = rcsv.splitlines()    
+        try:
+            for i in range(1, len(f)):
+                csv.append(f[i].strip("\n").split(","))
+            for i in range(0, len(csv)):
+                titles.append(csv[i][0])
+                titles.append(csv[i][1])
+            titles = sorted(set(titles))
+        except:
             raise Exception("CSV file is empty")
-        for i in range(1, len(f)):
-            csv.append(f[i].strip("\n").split(","))
-        for i in range(0, len(csv)):
-            titles.append(csv[i][0])
-            titles.append(csv[i][1])
-        titles = sorted(set(titles))
         return csv, titles
 
     def create_matrix(self, n):
@@ -161,6 +162,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
