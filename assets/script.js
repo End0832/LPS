@@ -10,11 +10,9 @@ function print(text, arg) {
     }
 }
 
-let errored = false;
 function error(err, pmsg, amsg) {
-    errored = true;
     print(pmsg, "replace");
-    alert(f"{amsg}:\n{err.message}");
+    alert(ˋ${amsg}:\n${err.message}ˋ);
     throw err;
 }
 
@@ -82,10 +80,4 @@ lps.get(matrix.get_title_pos(from_box_val), matrix.get_title_pos(to_box_val))
     print(result, "replace");
 }
 
-try {
-    init();
-} catch(err) {
-    if (errored == false) {
-        error(err, "Error.", "Major error");
-    }
-}
+init();
