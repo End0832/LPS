@@ -11,9 +11,13 @@ function print(text, arg) {
 }
 
 function error(err, pmsg, amsg) {
-    const emsg = err.message.split("\n");
+    let emsg = err.message.split("\n");
+    if (!emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")) {
+        emsg = `${emsg.at(-2)}`;
+    else {
+        emsg = `${emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")}\n${emsg.at(-2)}`;
     print(pmsg, "replace");
-    alert(`${amsg}:\n${emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")}\n${emsg.at(-2)}`);
+    alert(`${amsg}:\n${emsg}`);
     throw err;
 }
 
@@ -39,7 +43,7 @@ async function init() {
     print("Loading CSV...", "add");
     try {
         const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
-        if (!csvResponse.ok) {throw new Error(`HTTP: ${csvResponse.status} - ${csvResponse.statusText}\n`)}
+        if (!csvResponse.ok) {throw new Error(`HTTP: ${csvResponse.status}\n`)}
         const csvText = await csvResponse.text();
         pyodide.globals.set("csv_text", csvText);
     
