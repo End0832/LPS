@@ -16,6 +16,7 @@ function error(err, pmsg, amsg) {
         emsg = `${emsg.at(-2)}`;
     } else {
         emsg = `${emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")}\n${emsg.at(-2)}`;
+    }
     print(pmsg, "replace");
     alert(`${amsg}:\n${emsg}`);
     throw err;
