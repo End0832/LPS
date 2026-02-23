@@ -14,7 +14,7 @@ function error(err, pmsg, amsg) {
     let emsg = err.message.split("\n");
     if (!emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")) {
         emsg = `${emsg.at(-2)}`;
-    else {
+    } else {
         emsg = `${emsg.filter(e => e.startsWith('  File "<exec>", ')).join("\n")}\n${emsg.at(-2)}`;
     print(pmsg, "replace");
     alert(`${amsg}:\n${emsg}`);
