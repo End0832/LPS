@@ -27,6 +27,7 @@ async function init() {
     print("Loading Python...", "add");
     try {
         const scriptResponse = await fetch("https://end0832.github.io/LPS/assets/LPS.py");
+        if (!scriptResponse.ok) {throw new Error(`HTTP: ${scriptResponse.status} - ${scriptResponse.statusText}\n`)}
         await pyodide.runPythonAsync(`local = False`);
         const scriptCode = await scriptResponse.text();
         await pyodide.runPythonAsync(scriptCode);
@@ -38,6 +39,7 @@ async function init() {
     print("Loading CSV...", "add");
     try {
         const csvResponse = await fetch("https://end0832.github.io/LPS/" + subdomain + "/data.csv");
+        if (!csvResponse.ok) {throw new Error(`HTTP: ${csvResponse.status} - ${csvResponse.statusText}\n`)}
         const csvText = await csvResponse.text();
         pyodide.globals.set("csv_text", csvText);
     
