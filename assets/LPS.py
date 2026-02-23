@@ -22,15 +22,12 @@ class Matrix():
                 f = f.readlines()
         else:
             f = rcsv.splitlines()    
-        try:
-            for i in range(1, len(f)):
-                csv.append(f[i].strip("\n").split(","))
-            for i in range(0, len(csv)):
-                titles.append(csv[i][0])
-                titles.append(csv[i][1])
-            titles = sorted(set(titles))
-        except Exception as e:
-            raise Exception("CSV file does not respect the expected form.") from e
+        for i in range(1, len(f)):
+            csv.append(f[i].strip("\n").split(","))
+        for i in range(0, len(csv)):
+            titles.append(csv[i][0])
+            titles.append(csv[i][1])
+        titles = sorted(set(titles))
         return csv, titles
 
     def create_matrix(self, n):
@@ -162,6 +159,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
