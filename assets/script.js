@@ -13,7 +13,7 @@ function print(text, arg) {
 function error(err, pmsg, amsg) {
     const emsg = err.message.split("\n");
     print(pmsg, "replace");
-    alert(`${amsg}:\n${emsg[1]}\n${emsg.at(-1)}`);
+    alert(`${amsg}:\n${emsg[1]}\n${emsg.at(-2)}`);
     throw err;
 }
 
