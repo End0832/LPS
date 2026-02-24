@@ -6,8 +6,6 @@ except NameError:
 if local:
     from PySide6 import QtWidgets as qw
 
-from math import inf
-
 class Matrix():
     def __init__(self, rcsv):
         self.csv, self.titles = self.read_csv(rcsv)
@@ -31,12 +29,7 @@ class Matrix():
         return csv, titles
 
     def create_matrix(self, n):
-        matrix = []
-        for _ in range(n):
-            nested_list = []
-            for _ in range(n):
-                nested_list.append(inf)
-            matrix.append(nested_list)
+        matrix = [[float('inf') for _ in range(n)] for _ in range(n)]
         return matrix
 
     def fill(self):
@@ -70,7 +63,7 @@ class Dijkstra():
         visited = []
         n = len(self.matrix)
         for _ in range(n):
-            self.cost_for_ends.append(inf)
+            self.cost_for_ends.append(float('inf'))
             visited.append(False)
             self.path.append(None)
         
@@ -78,7 +71,7 @@ class Dijkstra():
 
         for _ in range(n):
             smallest = None
-            min_dist = inf
+            min_dist = float('inf')
             for i in range(n):
                 if visited[i] == False and self.cost_for_ends[i] < min_dist:
                     min_dist = self.cost_for_ends[i]
@@ -90,7 +83,7 @@ class Dijkstra():
             visited[smallest] = True
 
             for j in range(n):
-                if self.matrix[smallest][j] != inf and visited[j] == False:
+                if self.matrix[smallest][j] != float'(inf') and visited[j] == False:
                     dist = self.matrix[smallest][j] + self.cost_for_ends[smallest]
                     if dist < self.cost_for_ends[j]:
                         self.cost_for_ends[j] = dist
@@ -159,6 +152,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
