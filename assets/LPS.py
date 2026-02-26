@@ -83,7 +83,7 @@ class Dijkstra():
             visited[smallest] = True
 
             for j in range(n):
-                if self.matrix[smallest][j] != float'(inf') and visited[j] == False:
+                if self.matrix[smallest][j] != float('inf') and visited[j] == False:
                     dist = self.matrix[smallest][j] + self.cost_for_ends[smallest]
                     if dist < self.cost_for_ends[j]:
                         self.cost_for_ends[j] = dist
@@ -152,6 +152,7 @@ if local:
     
     window.show()
     app.exec()
+
 
 
 
